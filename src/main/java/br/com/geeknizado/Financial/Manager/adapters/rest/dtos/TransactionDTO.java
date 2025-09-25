@@ -23,8 +23,8 @@ public class TransactionDTO {
     private BigDecimal value;
     private String description;
     @JsonIgnore
-    private User user;
-    private Category category;
+    private UserDTO user;
+    private CategoryDTO category;
     private OffsetDateTime transactionDate;
     private Boolean isRecurring;
     private Integer installments;
