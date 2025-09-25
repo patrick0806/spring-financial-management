@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -52,6 +53,7 @@ class CreateTransactionUseCaseTest {
                 "Salary",
                 "userId",
                 "categoryId",
+                OffsetDateTime.now(),
                 false,
                 0
         );
@@ -82,6 +84,7 @@ class CreateTransactionUseCaseTest {
                 "Netflix",
                 "userId",
                 "categoryId",
+                OffsetDateTime.now(),
                 true,
                 0
         );
@@ -115,6 +118,7 @@ class CreateTransactionUseCaseTest {
                 "Notebook",
                 "userId",
                 "categoryId",
+                OffsetDateTime.now(),
                 false,
                 3
         );
@@ -138,7 +142,7 @@ class CreateTransactionUseCaseTest {
     void shouldThrowWhenUserNotFound() {
         when(userRepository.findById("userId")).thenReturn(Optional.empty());
 
-        var dto = new CreateTransactionDTO(TransactionType.EXPENSE, BigDecimal.TEN, "Coffee", "userId", "categoryId", false, 0);
+        var dto = new CreateTransactionDTO(TransactionType.EXPENSE, BigDecimal.TEN, "Coffee", "userId", "categoryId", OffsetDateTime.now(),false, 0);
 
         assertThatThrownBy(() -> useCase.execute(dto))
                 .isInstanceOf(NotFoundException.class)
@@ -150,7 +154,7 @@ class CreateTransactionUseCaseTest {
         when(userRepository.findById("userId")).thenReturn(Optional.of(new User()));
         when(categoryRepository.findById("categoryId")).thenReturn(Optional.empty());
 
-        var dto = new CreateTransactionDTO(TransactionType.EXPENSE, BigDecimal.TEN, "Coffee", "userId", "categoryId", false, 0);
+        var dto = new CreateTransactionDTO(TransactionType.EXPENSE, BigDecimal.TEN, "Coffee", "userId", "categoryId",OffsetDateTime.now(), false, 0);
 
         assertThatThrownBy(() -> useCase.execute(dto))
                 .isInstanceOf(NotFoundException.class)
@@ -162,8 +166,8 @@ class CreateTransactionUseCaseTest {
         when(userRepository.findById("userId")).thenReturn(Optional.of(new User()));
         when(categoryRepository.findById("categoryId")).thenReturn(Optional.of(Category.builder().build()));
 
-        var dtoZero = new CreateTransactionDTO(TransactionType.EXPENSE, BigDecimal.ZERO, "Coffee", "userId", "categoryId", false, 0);
-        var dtoNegative = new CreateTransactionDTO(TransactionType.EXPENSE, BigDecimal.valueOf(-5), "Coffee", "userId", "categoryId", false, 0);
+        var dtoZero = new CreateTransactionDTO(TransactionType.EXPENSE, BigDecimal.ZERO, "Coffee", "userId", "categoryId",OffsetDateTime.now(), false, 0);
+        var dtoNegative = new CreateTransactionDTO(TransactionType.EXPENSE, BigDecimal.valueOf(-5), "Coffee", "userId", "categoryId",OffsetDateTime.now(), false, 0);
 
         assertThatThrownBy(() -> useCase.execute(dtoZero))
                 .isInstanceOf(BadRequestException.class);

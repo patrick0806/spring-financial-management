@@ -26,7 +26,7 @@ public class CreateCategoryUseCaseTest {
 
     @Test
     void shouldCreateCategoryWhenNotExists() {
-        var dto = new CreateCategoryDTO("Food", TransactionType.EXPENSE);
+        var dto = new CreateCategoryDTO("Food", "hexcolor",TransactionType.EXPENSE);
 
         when(repository.findByName("Food")).thenReturn(Optional.empty());
         when(repository.save(any(Category.class))).thenAnswer(invocation -> {
@@ -45,7 +45,7 @@ public class CreateCategoryUseCaseTest {
 
     @Test
     void shouldThrowExceptionWhenCategoryAlreadyExists() {
-        var dto = new CreateCategoryDTO("Food", TransactionType.EXPENSE);
+        var dto = new CreateCategoryDTO("Food", "hexcolor", TransactionType.EXPENSE);
 
         when(repository.findByName("Food")).thenReturn(Optional.of(Category.builder().name("FOOD").build()));
 
