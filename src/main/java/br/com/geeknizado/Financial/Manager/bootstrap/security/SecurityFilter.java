@@ -29,8 +29,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
 
         if(!token.isEmpty()){
-            var email = validateToken.execute(token);
-            var user = userDatasource.findByEmail(email);
+            var userId = validateToken.execute(token);
+            var user = userDatasource.findById(userId);
 
             if(user.isEmpty()) {
                 throw new UsernameNotFoundException("User not found");
