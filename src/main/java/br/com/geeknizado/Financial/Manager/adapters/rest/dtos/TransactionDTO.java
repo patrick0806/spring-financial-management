@@ -4,6 +4,7 @@ import br.com.geeknizado.Financial.Manager.internal.model.Category;
 import br.com.geeknizado.Financial.Manager.internal.model.User;
 import br.com.geeknizado.Financial.Manager.internal.model.enums.TransactionType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class TransactionDTO {
     private TransactionType type;
     private BigDecimal value;
     private String description;
+    @JsonIgnore
     private User user;
     private Category category;
     private OffsetDateTime transactionDate;
