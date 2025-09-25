@@ -37,6 +37,6 @@ public class Category {
     @CreatedDate
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Transaction> transactions;
 }
