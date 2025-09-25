@@ -26,6 +26,9 @@ public class Category {
     @Column(length = 100)
     private String name;
 
+    @Column(length = 15)
+    private String color;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TransactionType type;

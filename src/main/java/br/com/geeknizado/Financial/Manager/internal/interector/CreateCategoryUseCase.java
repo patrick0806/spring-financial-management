@@ -22,6 +22,7 @@ public class CreateCategoryUseCase {
 
         var category = Category.builder()
                 .name(categoryDTO.name())
+                .color(categoryDTO.color())
                 .type(categoryDTO.type())
                 .build();
 
