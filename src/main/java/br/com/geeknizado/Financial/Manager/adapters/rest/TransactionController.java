@@ -42,7 +42,7 @@ public class TransactionController implements TransactionOpenApi {
     @Override
     @GetMapping
     public ResponseEntity<List<TransactionDTO>> listTransactions(
-            @RequestParam TransactionType transactionType,
+            @RequestParam(required = false) TransactionType transactionType,
             @RequestParam Integer month,
             @RequestParam Integer year
     ) {
