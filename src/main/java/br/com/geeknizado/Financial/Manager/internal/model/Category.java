@@ -2,8 +2,10 @@ package br.com.geeknizado.Financial.Manager.internal.model;
 
 import br.com.geeknizado.Financial.Manager.internal.model.enums.TransactionType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.OffsetDateTime;
@@ -14,6 +16,8 @@ import java.util.UUID;
 @Table(name = "categories")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

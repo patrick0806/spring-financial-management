@@ -2,9 +2,7 @@ package br.com.geeknizado.Financial.Manager.internal.model;
 
 import br.com.geeknizado.Financial.Manager.internal.model.enums.TransactionType;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
@@ -16,6 +14,8 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
