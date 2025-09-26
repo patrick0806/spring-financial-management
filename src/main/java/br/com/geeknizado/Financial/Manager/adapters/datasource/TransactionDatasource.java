@@ -6,9 +6,12 @@ import br.com.geeknizado.Financial.Manager.bootstrap.exception.customException.N
 import br.com.geeknizado.Financial.Manager.internal.model.Transaction;
 import br.com.geeknizado.Financial.Manager.internal.model.enums.TransactionType;
 import br.com.geeknizado.Financial.Manager.internal.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,17 +45,13 @@ public class TransactionDatasource implements TransactionRepository {
     }
 
     @Override
+    @Transactional
     public void deleteByGroupId(UUID groupId){
-        var relatedTransactions = this.repository.findByGroupId(groupId);
-
-        var startOfCurrentMonth = OffsetDateTime.now()
+        var startOfCurrentMonth = LocalDate.now(ZoneOffset.UTC) // ou ZoneId.systemDefault()
                 .withDayOfMonth(1)
-                .toLocalDate()
-                .atStartOfDay(OffsetDateTime.now().getOffset())
-                .toOffsetDateTime();
+                .atStartOfDay()
+                .atOffset(ZoneOffset.UTC);
 
-        relatedTransactions.stream()
-                .filter(t -> !t.getTransactionDate().isBefore(startOfCurrentMonth))
-                .forEach(this.repository::delete);
+        repository.deleteFromMonthOnwards(groupId, startOfCurrentMonth);
     }
 }
