@@ -14,4 +14,6 @@ public interface TransactionRepository {
     Transaction save(Transaction t);
     void delete(Transaction transaction);
     void deleteByGroupId(UUID groupId);
+    List<Transaction> findRecurringTransactions(Integer month, Integer year);
+    boolean existsByGroupIdAndMonthAndYear(UUID groupId, Integer month, Integer year);
 }

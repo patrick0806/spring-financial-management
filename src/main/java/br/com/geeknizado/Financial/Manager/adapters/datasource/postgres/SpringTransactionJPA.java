@@ -38,4 +38,19 @@ public interface SpringTransactionJPA extends JpaRepository<Transaction, UUID> {
     @Query("DELETE FROM Transaction t WHERE t.groupId = :groupId AND t.transactionDate >= :startOfMonth")
     void deleteFromMonthOnwards(@Param("groupId") UUID groupId,
                                 @Param("startOfMonth") OffsetDateTime startOfMonth);
+
+    @Query("SELECT t FROM Transaction t " +
+            "WHERE t.isRecurring = true " +
+            "AND MONTH(t.transactionDate) = :month " +
+            "AND YEAR(t.transactionDate) = :year")
+    List<Transaction> findRecurringTransactions(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT COUNT(t) > 0 FROM Transaction t " +
+            "WHERE t.groupId = :groupId " +
+            "AND t.isRecurring = true " +
+            "AND MONTH(t.transactionDate) = :month " +
+            "AND YEAR(t.transactionDate) = :year")
+    boolean existsByGroupIdAndMonthAndYear(@Param("groupId") UUID groupId,
+                                           @Param("month") Integer month,
+                                           @Param("year") Integer year);
 }

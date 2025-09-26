@@ -19,4 +19,6 @@ docker run --name financial_management_db \
 After that you can run your project with maven command or by the play in Intellij
 
 ## Things TODO
-- Add a job for add the recurring expenses or income all next month
+- Add a job for add the recurring expenses or income all month +2 [Ok]
+- Add support to define a balance for each category and see the resume
+- Statics about pasts months and evolutions

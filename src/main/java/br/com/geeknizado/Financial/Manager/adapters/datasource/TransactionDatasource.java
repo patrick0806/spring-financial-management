@@ -55,4 +55,14 @@ public class TransactionDatasource implements TransactionRepository {
 
         repository.deleteFromMonthOnwards(groupId, startOfCurrentMonth);
     }
+
+    @Override
+    public List<Transaction> findRecurringTransactions(Integer month, Integer year) {
+        return this.repository.findRecurringTransactions(month,year);
+    }
+
+    @Override
+    public boolean existsByGroupIdAndMonthAndYear(UUID groupId, Integer month, Integer year) {
+        return this.repository.existsByGroupIdAndMonthAndYear(groupId,month,year);
+    }
 }
