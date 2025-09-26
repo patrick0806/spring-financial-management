@@ -29,10 +29,10 @@ public class DeleteTransactionUseCase {
             throw new BadRequestException("Transactions from past months cannot be deleted");
         }
 
-        if(!isRecurring &&  !hasInstallments){
-            this.repository.delete(transaction);
+        if(isRecurring || hasInstallments){
+          this.repository.deleteByGroupId(transaction.getGroupId());
         }else{
-            this.repository.deleteByGroupId(transaction.getGroupId());
+            this.repository.delete(transaction);
         }
     }
 }
