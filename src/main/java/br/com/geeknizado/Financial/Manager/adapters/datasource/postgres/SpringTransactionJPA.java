@@ -2,7 +2,9 @@ package br.com.geeknizado.Financial.Manager.adapters.datasource.postgres;
 
 import br.com.geeknizado.Financial.Manager.internal.model.Transaction;
 import br.com.geeknizado.Financial.Manager.internal.model.enums.TransactionType;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -31,6 +33,9 @@ public interface SpringTransactionJPA extends JpaRepository<Transaction, UUID> {
             @Param("year") int year
     );
 
-    @Query("DELETE FROM Transaction t WHERE t.groupId = :groupId AND t.transactionDate >= :startOfCurrentMonth")
-    void deleteFromMonthOnwards(@Param("groupId") UUID groupId, @Param("startOfCurrentMonth") OffsetDateTime startOfCurrentMonth);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Transaction t WHERE t.groupId = :groupId AND t.transactionDate >= :startOfMonth")
+    void deleteFromMonthOnwards(@Param("groupId") UUID groupId,
+                                @Param("startOfMonth") OffsetDateTime startOfMonth);
 }

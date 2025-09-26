@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class TransactionDatasource implements TransactionRepository {
     @Override
     @Transactional
     public void deleteByGroupId(UUID groupId){
-        var startOfCurrentMonth = LocalDate.now(ZoneOffset.UTC) // ou ZoneId.systemDefault()
+        var startOfCurrentMonth = LocalDate.now(ZoneOffset.UTC)
                 .withDayOfMonth(1)
                 .atStartOfDay()
                 .atOffset(ZoneOffset.UTC);
