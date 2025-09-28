@@ -3,6 +3,7 @@ package br.com.geeknizado.financial_management.internal.interaction.transaction;
 import br.com.geeknizado.financial_management.adapters.rest.dtos.CreateTransactionDTO;
 import br.com.geeknizado.financial_management.bootstrap.exception.customException.BadRequestException;
 import br.com.geeknizado.financial_management.bootstrap.exception.customException.NotFoundException;
+import br.com.geeknizado.financial_management.bootstrap.security.SecurityUtils;
 import br.com.geeknizado.financial_management.internal.model.Category;
 import br.com.geeknizado.financial_management.internal.model.Transaction;
 import br.com.geeknizado.financial_management.internal.model.User;
@@ -32,9 +33,9 @@ public class CreateTransactionUseCase {
         if (transactionDTO.value().compareTo(BigDecimal.ZERO) <= 0) {
             throw new BadRequestException("Transaction value must be greater than 0");
         }
-
-        var user = userRepository.findById(transactionDTO.userId())
-                .orElseThrow(() -> new NotFoundException(String.format("User with id: %s not found", transactionDTO.userId())));
+        var userId = SecurityUtils.getCurrentUserId();
+        var user = userRepository.findById(userId.toString())
+                .orElseThrow(() -> new NotFoundException(String.format("User with id: %s not found", userId.toString())));
 
         var category = categoryRepository.findById(transactionDTO.categoryId())
                 .orElseThrow(() -> new NotFoundException(String.format("Category with id: %s not found", transactionDTO.categoryId())));

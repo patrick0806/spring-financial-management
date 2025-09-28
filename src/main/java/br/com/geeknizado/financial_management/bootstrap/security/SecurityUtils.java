@@ -1,5 +1,6 @@
 package br.com.geeknizado.financial_management.bootstrap.security;
 
+import br.com.geeknizado.financial_management.bootstrap.exception.customException.UnauthorizedException;
 import br.com.geeknizado.financial_management.internal.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,6 @@ public class SecurityUtils {
     public static UUID getCurrentUserId() {
         return getCurrentUser()
                 .map(User::getId)
-                .orElseThrow(() -> new IllegalStateException("No authenticated user found"));
+                .orElseThrow(() -> new UnauthorizedException("No authenticated user found"));
     }
 }

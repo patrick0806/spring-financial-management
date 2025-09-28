@@ -1,5 +1,6 @@
 package br.com.geeknizado.financial_management.adapters.rest.openapi;
 
+import br.com.geeknizado.financial_management.adapters.rest.dtos.BalanceSummaryDTO;
 import br.com.geeknizado.financial_management.adapters.rest.dtos.CreateTransactionDTO;
 import br.com.geeknizado.financial_management.adapters.rest.dtos.TransactionDTO;
 import br.com.geeknizado.financial_management.internal.model.enums.TransactionType;
@@ -44,4 +45,24 @@ public interface TransactionOpenApi {
             ),
     })
     ResponseEntity<List<TransactionDTO>> listTransactions(TransactionType transactionType, Integer month, Integer year);
+
+    @Operation(summary = "List last expenses")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List Expenses",
+                    content = { @Content(schema = @Schema(implementation = TransactionDTO.class), mediaType = "application/json") }
+            ),
+    })
+    ResponseEntity<List<TransactionDTO>> listLatestExpenses(Integer month, Integer year);
+
+    @Operation(summary = "List last expenses")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Balance summary",
+                    content = { @Content(schema = @Schema(implementation = BalanceSummaryDTO.class), mediaType = "application/json") }
+            ),
+    })
+    ResponseEntity<BalanceSummaryDTO> balanceSummary(Integer month, Integer year);
 }

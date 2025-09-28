@@ -1,12 +1,15 @@
 package br.com.geeknizado.financial_management.adapters.datasource;
 
 import br.com.geeknizado.financial_management.adapters.datasource.postgres.SpringTransactionJPA;
+import br.com.geeknizado.financial_management.adapters.datasource.postgres.model.BalanceSummary;
 import br.com.geeknizado.financial_management.internal.model.Transaction;
 import br.com.geeknizado.financial_management.internal.model.enums.TransactionType;
 import br.com.geeknizado.financial_management.internal.repository.TransactionRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -37,6 +40,11 @@ public class TransactionDatasource implements TransactionRepository {
     }
 
     @Override
+    public List<Transaction> listLastExpenses(TransactionType transactionType, Integer month, Integer year, UUID userId) {
+        return this.repository.list(transactionType, month, year, userId);
+    }
+
+    @Override
     public void delete(Transaction transaction) {
         this.repository.delete(transaction);
     }
@@ -60,5 +68,15 @@ public class TransactionDatasource implements TransactionRepository {
     @Override
     public boolean existsByGroupIdAndMonthAndYear(UUID groupId, Integer month, Integer year) {
         return this.repository.existsByGroupIdAndMonthAndYear(groupId,month,year);
+    }
+
+    @Override
+    public BigDecimal getMonthlyTotalExpenses(UUID userId,Integer month,Integer year){
+        return this.repository.getMonthlyTotalExpenses(userId,month, year);
+    }
+
+    @Override
+    public BalanceSummary getMonthlyBalance(UUID userId,Integer month,Integer year){
+        return this.repository.getMonthlyBalance(userId, month, year);
     }
 }

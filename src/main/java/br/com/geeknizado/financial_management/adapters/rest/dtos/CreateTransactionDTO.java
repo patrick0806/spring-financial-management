@@ -11,7 +11,6 @@ public record CreateTransactionDTO(
         TransactionType type,
         BigDecimal value,
         @NotEmpty String description,
-        @NotBlank String userId,
         @NotBlank String categoryId,
         OffsetDateTime transactionDate,
         Boolean isRecurring,
