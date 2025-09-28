@@ -96,7 +96,7 @@ public class WebSecurityConfig {
     @Profile("prod")
     public CorsConfigurationSource prodCorsConfiguration() {
         var configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://meufrontend.com")); // TODO: define path
+        configuration.setAllowedOrigins(List.of("https://zenfin.cloud")); // TODO: define path
         configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type", "Refresh-Token"));
         configuration.setAllowCredentials(true);
