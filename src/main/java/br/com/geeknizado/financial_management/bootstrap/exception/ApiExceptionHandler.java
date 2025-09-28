@@ -128,7 +128,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Problem> handleBusinessException(BusinessException ex) {
-        HttpStatus status = HttpStatus.CONFLICT;
+        HttpStatus status = HttpStatus.FORBIDDEN;
         Problem problem = Problem.builder()
                 .status(status.value())
                 .title("Business rule violation")

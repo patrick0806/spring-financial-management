@@ -37,6 +37,9 @@ public class Category {
     @CreatedDate
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
+
     /*@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Transaction> transactions;*/
 }

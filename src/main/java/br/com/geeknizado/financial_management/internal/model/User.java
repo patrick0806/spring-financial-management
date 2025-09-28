@@ -36,7 +36,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "is_active")
-    private boolean isActive = true;
+    private Boolean isActive;
 
     @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
     @CreatedDate
