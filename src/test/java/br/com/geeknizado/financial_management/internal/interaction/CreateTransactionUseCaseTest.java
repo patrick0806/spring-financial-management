@@ -3,6 +3,7 @@ package br.com.geeknizado.financial_management.internal.interaction;
 import br.com.geeknizado.financial_management.adapters.rest.dtos.CreateTransactionDTO;
 import br.com.geeknizado.financial_management.bootstrap.exception.customException.BadRequestException;
 import br.com.geeknizado.financial_management.bootstrap.exception.customException.NotFoundException;
+import br.com.geeknizado.financial_management.bootstrap.security.SecurityUtils;
 import br.com.geeknizado.financial_management.internal.interaction.transaction.CreateTransactionUseCase;
 import br.com.geeknizado.financial_management.internal.model.Category;
 import br.com.geeknizado.financial_management.internal.model.Transaction;
@@ -11,6 +12,7 @@ import br.com.geeknizado.financial_management.internal.model.enums.TransactionTy
 import br.com.geeknizado.financial_management.internal.repository.CategoryRepository;
 import br.com.geeknizado.financial_management.internal.repository.TransactionRepository;
 import br.com.geeknizado.financial_management.internal.repository.UserRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+
 class CreateTransactionUseCaseTest {
 
     private CategoryRepository categoryRepository;
@@ -33,6 +36,11 @@ class CreateTransactionUseCaseTest {
 
     private User user;
     private Category category;
+
+    @BeforeAll
+    static void setUpSecurity(){
+        mockStatic(SecurityUtils.class).when(SecurityUtils::getCurrentUserId).thenReturn(UUID.randomUUID());
+    }
 
     @BeforeEach
     void setUp() {
@@ -63,14 +71,13 @@ class CreateTransactionUseCaseTest {
                 TransactionType.EXPENSE,
                 new BigDecimal("100.0"),
                 "Simple transaction",
-                user.getId().toString(),
                 category.getId().toString(),
                 OffsetDateTime.now(),
                 false,
                 0
         );
 
-        when(userRepository.findById(user.getId().toString())).thenReturn(Optional.of(user));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(categoryRepository.findById(category.getId().toString())).thenReturn(Optional.of(category));
         when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -92,14 +99,13 @@ class CreateTransactionUseCaseTest {
                 TransactionType.EXPENSE,
                 new BigDecimal("100.0"),
                 "Recurring transaction",
-                user.getId().toString(),
                 category.getId().toString(),
                 OffsetDateTime.now(),
                 true,
                 0
         );
 
-        when(userRepository.findById(user.getId().toString())).thenReturn(Optional.of(user));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(categoryRepository.findById(category.getId().toString())).thenReturn(Optional.of(category));
         when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -114,14 +120,13 @@ class CreateTransactionUseCaseTest {
         var dto = new CreateTransactionDTO(TransactionType.EXPENSE,
                 new BigDecimal("100.0"),
                 "Simple transaction",
-                user.getId().toString(),
                 category.getId().toString(),
                 OffsetDateTime.now(),
                 false,
                 3
         );
 
-        when(userRepository.findById(user.getId().toString())).thenReturn(Optional.of(user));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(categoryRepository.findById(category.getId().toString())).thenReturn(Optional.of(category));
         when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -144,7 +149,6 @@ class CreateTransactionUseCaseTest {
         var dto = new CreateTransactionDTO(TransactionType.EXPENSE,
                 new BigDecimal("0"),
                 "Simple transaction",
-                user.getId().toString(),
                 category.getId().toString(),
                 OffsetDateTime.now(),
                 false,
@@ -155,34 +159,17 @@ class CreateTransactionUseCaseTest {
     }
 
     @Test
-    void shouldThrowNotFoundIfUserNotFound() {
-        var dto = new CreateTransactionDTO(TransactionType.EXPENSE,
-                new BigDecimal("100.0"),
-                "Simple transaction",
-                user.getId().toString(),
-                category.getId().toString(),
-                OffsetDateTime.now(),
-                false,
-                0);
-
-        when(userRepository.findById(dto.userId())).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> createTransactionUseCase.execute(dto));
-    }
-
-    @Test
     void shouldThrowNotFoundIfCategoryNotFound() {
         var dto = new CreateTransactionDTO(
                 TransactionType.EXPENSE,
                 new BigDecimal("100.0"),
                 "Simple transaction",
-                user.getId().toString(),
                 category.getId().toString(),
                 OffsetDateTime.now(),
                 false,
                 0
         );
 
-        when(userRepository.findById(user.getId().toString())).thenReturn(Optional.of(user));
         when(categoryRepository.findById(dto.categoryId())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> createTransactionUseCase.execute(dto));
