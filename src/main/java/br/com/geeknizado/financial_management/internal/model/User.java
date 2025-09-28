@@ -42,8 +42,8 @@ public class User implements UserDetails {
     @CreatedDate
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
-    /*@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaction> transactions;*/
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions;
 
     @Override
     public boolean isAccountNonExpired() {

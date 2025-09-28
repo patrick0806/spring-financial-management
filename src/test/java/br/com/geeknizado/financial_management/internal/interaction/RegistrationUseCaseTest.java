@@ -38,7 +38,7 @@ public class RegistrationUseCaseTest {
         assertThat(result.getName()).isEqualTo("Patrick");
         assertThat(result.getEmail()).isEqualTo("patrick@test.com");
         assertThat(result.getPassword()).isNotEqualTo("123456"); // deve estar encriptada
-        assertThat(result.isActive()).isTrue();
+        assertThat(result.getIsActive()).isTrue();
     }
 
     @Test
