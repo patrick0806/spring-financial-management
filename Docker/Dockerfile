@@ -5,4 +5,6 @@ RUN mvn clean package
 
 FROM openjdk:21-jdk-slim as runtime
 COPY --from=build /app/target/*.jar /financial-management.jar
+
+ENV SPRING_PROFILES_ACTIVE=prod
 CMD ["java", "-jar", "/financial-management.jar"]

@@ -16,6 +16,11 @@ docker run --name financial_management_db \
   -d postgres:15
 ```
 
+For disable cors in local development you need using the dev profile
+```bash
+SPRING_PROFILES_ACTIVE=dev
+```
+
 After that you can run your project with maven command or by the play in Intellij
 
 ## Things TODO
